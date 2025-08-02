@@ -1,8 +1,24 @@
+use core::{panic};
+
 // TODO: `easy_ticket` should panic when the title is invalid.
 //   When the description is invalid, instead, it should use a default description:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
-    todo!()
+    let empty_title = "Title cannot be empty".to_string();
+    let long_title = "Title cannot be longer than 50 bytes".to_string();
+
+    match Ticket::new(title.clone(), description, status.clone()) {
+        Ok(ticket) => {
+            ticket
+        }
+        Err(error) => {
+            if error.contains("Description") {
+                Ticket::new(title, "Description not provided".to_string(), status).unwrap()
+            } else {
+                panic!("{error}")
+            }
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]
